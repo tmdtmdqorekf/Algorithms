@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-class Pair {
+class Pair0 {
     int x, y;
-    public Pair(int x, int y) {
+    public Pair0(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -16,7 +16,7 @@ public class BOJ1926 {
     int num = 0, maxWidth = 0;
     int[][] canvas;
     boolean[][] isVisited;
-    Queue<Pair> q = new LinkedList<>();
+    Queue<Pair0> q = new LinkedList<>();
 
     // 상 우 하 좌
     int[] dx = {0, 1, 0, -1};
@@ -48,12 +48,12 @@ public class BOJ1926 {
 
                 num += 1;
                 isVisited[i][j] = true; // 방문 체크
-                q.add(new Pair(i, j)); // 현재 위치 q에 추가
+                q.add(new Pair0(i, j)); // 현재 위치 q에 추가
 
                 // BFS 시작
                 int tmp = 0;
                 while (!q.isEmpty()) { // (0, 0)
-                    Pair curr = q.remove();
+                    Pair0 curr = q.remove();
                     tmp += 1;
 
                     // 현재 위치 기준으로 방향별로 탐색
@@ -67,7 +67,7 @@ public class BOJ1926 {
                         }
 
                         if (!isVisited[nextX][nextY] && canvas[nextX][nextY] == 1) {
-                            q.add(new Pair(nextX, nextY));
+                            q.add(new Pair0(nextX, nextY));
                             isVisited[nextX][nextY] = true;
                         }
                     }
