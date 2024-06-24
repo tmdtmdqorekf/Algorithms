@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-class BOJ1012 {
+class Pair4 {
     int x, y;
     public Pair4(int x, int y) {
         this.x = x;
@@ -12,7 +12,7 @@ class BOJ1012 {
     }
 }
 
-public class Main {
+public class BOJ1012 {
     int ans, T, M, N, K;
     int[][] map;
     int[][] isVisited;
