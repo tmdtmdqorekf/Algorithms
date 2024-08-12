@@ -1,19 +1,22 @@
 class Solution {
     public int solution(int[][] triangle) {
-        int[] dp = new int[triangle.length];
-
-        // 마지막 줄을 초기화
-        for (int i = 0; i < triangle[triangle.length - 1].length; i++) {
-            dp[i] = triangle[triangle.length - 1][i];
-        }
-
-        // 아래에서 위로 삼각형 탐색
-        for (int i = triangle.length - 2; i >= 0; i--) {
+        int answer = 0;
+        
+        for (int i = 1; i < triangle.length; i++) {
             for (int j = 0; j < triangle[i].length; j++) {
-                dp[j] = triangle[i][j] + Math.max(dp[j], dp[j + 1]);
+                if (j == 0) { // 제일 왼쪽 줄
+                    triangle[i][j] += triangle[i-1][j];
+                }
+                else if (i == j) { // 제일 오른쪽 줄
+                    triangle[i][j] += triangle[i-1][j-1];
+                } else { // 중간 줄들
+                    triangle[i][j] += Math.max(triangle[i-1][j-1], triangle[i-1][j]);
+                }
+                
+                answer = Math.max(answer, triangle[i][j]);
             }
         }
-
-        return dp[0]; // 최상단에 저장된 최대 합 반환
+    
+        return answer;
     }
 }
