@@ -14,44 +14,43 @@ class Solution {
     public int solution(int n, int[][] edge) {
         int answer = 0;
 
-        // 그래프를 인접 리스트로 변환
-        List<List<Integer>> graph = new ArrayList<>();
+        // 인접리스트 초기화
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
+            list.add(new ArrayList<>());
         }
+        
         for (int[] e : edge) {
-            graph.get(e[0]).add(e[1]);
-            graph.get(e[1]).add(e[0]);
+            list.get(e[0]).add(e[1]); // 간선의 시작 노드에서 끝 노드로 연결
+            list.get(e[1]).add(e[0]); // 양방향 그래프이므로 반대 방향도 추가
         }
         
-        // BFS를 위한 큐
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(1);
-        
-        // 방문 여부와 거리를 기록할 배열
+        Queue<Edge> q = new LinkedList<>();
         boolean[] isVisited = new boolean[n+1];
-        int[] distances = new int[n+1];
+        int[] dist = new int[n+1]; // 1부터 각 노드까지의 최단 거리 저장
+
+        q.add(new Edge(1, 1));
         isVisited[1] = true;
         
-        while (!queue.isEmpty()) {
-            int current = queue.poll();
-            
-            for (int neighbor : graph.get(current)) {
+        while (!q.isEmpty()) {
+            Edge curr = q.poll();
+
+            // 현재 노드에 연결된 모든 이웃 노드 찾기
+            for (int neighbor : list.get(curr.end)) {
                 if (!isVisited[neighbor]) {
                     isVisited[neighbor] = true;
-                    distances[neighbor] = distances[current] + 1;
-                    queue.add(neighbor);
+                    dist[neighbor] = dist[curr.end] + 1;
+                    q.add(new Edge(curr.end, neighbor)); // 이웃 노드 큐에 추가
                 }
             }
         }
         
-        // 최대 거리를 찾고, 그 거리를 가진 노드의 수를 계산
         int maxVal = 0;
-        for (int distance : distances) {
-            if (distance > maxVal) {
-                maxVal = distance;
+        for (int d : dist) {
+            if (d > maxVal) {
+                maxVal = d;
                 answer = 1;
-            } else if (distance == maxVal) {
+            } else if (d == maxVal) {
                 answer++;
             }
         }
