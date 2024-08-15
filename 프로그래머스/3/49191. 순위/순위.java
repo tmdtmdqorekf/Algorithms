@@ -20,8 +20,8 @@ class Solution {
             map2.get(result[0]).add(result[1]);
         }
 
-        dfs(map1, n);
-        dfs(map2, n);
+        bfs(map1, n);
+        bfs(map2, n);
         
         for (int i = 1; i <= n; i++) {
             // 내가 패배했거나 이긴 선수들의 합
@@ -34,7 +34,7 @@ class Solution {
         return answer;
     }
     
-    private void dfs(Map<Integer, HashSet<Integer>> map, int n) {
+    private void bfs(Map<Integer, HashSet<Integer>> map, int n) {
         for (int i = 1; i <= n; i++) {
             Queue<Integer> q = new LinkedList<>(map.get(i)); // 처음 선수들의 집합을 큐에 추가
             
