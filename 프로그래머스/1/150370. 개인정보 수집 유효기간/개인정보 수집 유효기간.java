@@ -14,8 +14,7 @@ class Solution {
 
         // 오늘 날짜 days로 변환하기
         int todayTotal = (336 * (year + 1)) + (28 * month) + days;
-        // System.out.println("todayTotal: " + todayTotal); // 7085
-        
+
         // terms에 따른 유효기간 days로 변환하여 저장
         Map<String, Integer> map = new HashMap<>();
         for (String term : terms) {
@@ -37,20 +36,16 @@ class Solution {
             String term = st2.nextToken();
             
             int expireDays = map.get(term);
-            // System.out.println("유효기간: " + expireDays);
-            
+
             if ((privacyTotal + expireDays) <= todayTotal) {
                 list.add(i + 1);
-                System.out.println("파기번호: " + (i+1));
             }
-            
-//             System.out.println("번호 " + (i+1) + ": privacyTotal for term " + term + ": " + (privacyTotal + expireDays));
-//             System.out.println();
-            
         }
-
+        
+        // 오름차순 정렬
         Collections.sort(list);
 
+        // ArrayList -> int[]
         return list.stream().mapToInt(Integer::intValue).toArray();
     }
 }
