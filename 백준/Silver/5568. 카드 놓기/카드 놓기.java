@@ -1,10 +1,13 @@
 import java.io.*;
 import java.util.*;
 
+
 public class Main {
     int n, k;
+
+    ArrayList<String> list = new ArrayList<>();
+    Set<String> set = new HashSet<>();
     StringBuilder sb = new StringBuilder();
-    Set<String> answer = new HashSet<>();
 
     public void solution() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -12,30 +15,28 @@ public class Main {
         n = Integer.parseInt(br.readLine());
         k = Integer.parseInt(br.readLine());
 
-        ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             list.add(br.readLine());
         }
 
         boolean[] isVisited = new boolean[n];
-        for (int i = 0; i < k; i++) {
-            permutation(list, isVisited,0);
-        }
 
-        System.out.println(answer.size());
+        permutation(k, 0, isVisited);
+
+        System.out.println(set.size());
     }
 
-    private void permutation(ArrayList<String> list, boolean[] isVisited, int depth) {
-        if (depth == k) {
-            answer.add(sb.toString());
+    private void permutation(int depth, int r, boolean[] isVisited) {
+        if (depth == r) {
+            set.add(sb.toString());
             return;
         }
 
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < n; i++) {
             if (!isVisited[i]) {
-                isVisited[i] = true;
                 sb.append(list.get(i));
-                permutation(list, isVisited,depth + 1);
+                isVisited[i] = true;
+                permutation(depth, r + 1, isVisited);
                 sb.delete(sb.length() - list.get(i).length(), sb.length());
                 isVisited[i] = false;
             }
