@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 class Virus {
     int x, y;
@@ -14,13 +12,13 @@ class Virus {
 
 public class Main {
     int N, M;
-    int answer = Integer.MIN_VALUE;
+    int maxSafetyZone = Integer.MIN_VALUE;
     int[][] map;
+
+    Queue<Virus> q = new LinkedList<>();
 
     int[] dx = {1, -1, 0, 0};
     int[] dy = {0, 0, 1, -1};
-
-    Queue<Virus> q = new LinkedList<>();
 
     public void solution() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,27 +27,27 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        // 맵 채우기
         map = new int[N][M];
+
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+                int n = Integer.parseInt(st.nextToken());
+                map[i][j] = n;
 
-                if (map[i][j] == 2) {
+                if (n == 2) {
                     q.add(new Virus(i, j));
                 }
             }
         }
 
-        // 3개 벽 조합
-        combination(0);
+        permutation(3, 0);
 
-        System.out.println(answer);
+        System.out.println(maxSafetyZone);
     }
 
-    private void combination(int wallCnt) {
-        if (wallCnt == 3) {
+    private void permutation(int depth, int r) {
+        if (depth == r) {
             spreadVirus();
             return;
         }
@@ -58,7 +56,7 @@ public class Main {
             for (int j = 0; j < M; j++) {
                 if (map[i][j] == 0) {
                     map[i][j] = 1;
-                    combination(wallCnt + 1);
+                    permutation(depth, r + 1);
                     map[i][j] = 0;
                 }
             }
@@ -66,11 +64,13 @@ public class Main {
     }
 
     private void spreadVirus() {
-        int[][] mapCopy = new int[N][M];
+        // 깊은 복사를 하려면 각 행 별로 복사해야함
+        int[][] newMap = new int[N][M];
         for (int i = 0; i < N; i++) {
-            mapCopy[i] = map[i].clone();
+            newMap[i] = map[i].clone();
         }
-        
+
+        // 이렇게 하면 q를 copy할 수 있음
         Queue<Virus> qCopy = new LinkedList<>(q);
 
         while (!qCopy.isEmpty()) {
@@ -80,30 +80,28 @@ public class Main {
                 int nx = curr.x + dx[i];
                 int ny = curr.y + dy[i];
 
-                if (0 <= nx && nx < N && 0 <= ny && ny < M) {
-                    if(mapCopy[nx][ny] == 0) {
-                        mapCopy[nx][ny] = 2;
-                        qCopy.add(new Virus(nx, ny));
-                    }
+                if (nx >= 0 && nx < N && ny >= 0 && ny < M && newMap[nx][ny] == 0) {
+                    qCopy.add(new Virus(nx, ny));
+                    newMap[nx][ny] = 2;
                 }
             }
         }
 
-        calculate(mapCopy);
+        countSafetyZone(newMap);
     }
 
+    private void countSafetyZone(int[][] newMap) {
+        int safetyZone = 0;
 
-    private void calculate(int[][] mapCopy) {
-        int safeZone = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                if (mapCopy[i][j] == 0) {
-                    safeZone++;
+                if (newMap[i][j] == 0) {
+                    safetyZone++;
                 }
             }
         }
 
-        answer = Math.max(safeZone, answer);
+        maxSafetyZone = Math.max(maxSafetyZone, safetyZone);
     }
 
     public static void main(String[] args) throws Exception {
