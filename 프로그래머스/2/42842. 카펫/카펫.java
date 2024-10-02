@@ -14,8 +14,7 @@ class Solution {
     
     Queue<Pair> q = new LinkedList<>();
     int[] answer = new int[2];
-    int[][] map;
-    
+
     public int[] solution(int brown, int yellow) {        
         int colorCnt = brown + yellow; // 12
         
@@ -32,7 +31,6 @@ class Solution {
             int h = square.y;
             
             yellowCnt = 0;
-            map = new int[w][h];
             for (int i = 1; i < w - 1; i++) {
                 for (int j = 1; j < h - 1; j++) {
                     yellowCnt++;
