@@ -17,8 +17,14 @@ class Solution {
         int answer = 0;
         
         // 1. 곡괭이로 캘 수 있는 총 광석 수 계산
-        int maxMining = Math.min(minerals.length, sum(picks) * 5);
-        minerals = Arrays.copyOfRange(minerals, 0, maxMining); // 광석을 잘라냄
+        int total = 0;
+        for (int p : picks) {
+            total += p;
+        }
+        
+        // 배열을 잘라서 불필요한 연산 줄이기
+        int maxMining = Math.min(minerals.length, total * 5); // 8, 30
+        minerals = Arrays.copyOfRange(minerals, 0, maxMining);
         
         // 2. 광석 묶음을 만든다. (5개씩 묶음)
         int dCnt = 0; int iCnt = 0; int sCnt = 0;
@@ -74,14 +80,5 @@ class Solution {
         }
         
         return answer;
-    }
-    
-    // 주어진 picks 배열의 합계를 구하는 함수
-    private int sum(int[] picks) {
-        int total = 0;
-        for (int pick : picks) {
-            total += pick;
-        }
-        return total;
     }
 }
